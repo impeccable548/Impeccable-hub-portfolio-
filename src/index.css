@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fef3c7;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b45309;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #92400e;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Comic Font Class */
+.comic-font {
+  font-family: 'Bangers', cursive;
+  letter-spacing: 2px;
+}
+
+/* Custom Animations */
+.animate-float-delay-1 {
+  animation: float 3s ease-in-out 0.5s infinite;
+}
+
+.animate-float-delay-2 {
+  animation: float 3s ease-in-out 1s infinite;
+}
+
+/* Loading Spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card Hover Effect */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(180, 83, 9, 0.3);
+}
+
+/* Focus Styles */
+*:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
+}
+
+/* Selection Color */
+::selection {
+  background-color: #fbbf24;
+  color: #78350f;
+}
