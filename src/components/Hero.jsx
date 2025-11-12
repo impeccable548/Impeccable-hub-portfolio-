@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { Code, Rocket, Brain, Github, Linkedin, Twitter } from 'lucide-react'
 import { useScroll } from '../hooks'
 import { storage } from '../lib/supabase'
@@ -8,6 +8,8 @@ const Hero = () => {
   const { scrollY } = useScroll()
   const [typedText, setTypedText] = useState('')
   const fullText = "Full Stack Developer | Web3 Enthusiast | Building the Future"
+  const aboutRef = React.useRef(null)
+  const aboutInView = useInView(aboutRef, { once: true, margin: "-100px" })
   
   const profilePhotoUrl = storage.getPublicUrl('uploads', 'profile/providence-dp.jpg')
 
@@ -253,6 +255,109 @@ const Hero = () => {
                 className="w-1 h-3 bg-amber-700 rounded-full"
               />
             </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+
+      {/* About Me Section - Fades in on Scroll */}
+      <motion.div
+        ref={aboutRef}
+        initial={{ opacity: 0, y: 100 }}
+        animate={aboutInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="relative z-10 max-w-4xl mx-auto mt-32 mb-16"
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={aboutInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 sm:p-10 lg:p-12 border-4 border-amber-700"
+        >
+          {/* About Me Header */}
+          <motion.h3
+            initial={{ opacity: 0, x: -50 }}
+            animate={aboutInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-3xl sm:text-4xl font-bold text-amber-900 mb-6 comic-font flex items-center gap-3"
+          >
+            <span className="text-4xl">👨‍💻</span>
+            About Me
+          </motion.h3>
+
+          {/* About Me Content */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={aboutInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="space-y-4 text-gray-700 text-base sm:text-lg leading-relaxed"
+          >
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={aboutInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              I'm a passionate <strong className="text-amber-800">Full Stack Developer</strong> and <strong className="text-amber-800">Web3 enthusiast</strong> currently studying Computer Science at the University of Benin. I specialize in building modern, scalable applications that solve real-world problems.
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={aboutInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.7 }}
+            >
+              With experience working on <strong className="text-amber-800">4+ startup projects</strong> and <strong className="text-amber-800">SaaS applications</strong>, I've helped clients bring their visions to life through clean code and innovative solutions. My expertise spans both traditional web development and cutting-edge blockchain technologies.
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={aboutInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.8 }}
+            >
+              I love working with technologies like <strong className="text-amber-800">React, Django, Flask, and Solidity</strong> to create seamless user experiences and robust backend systems. Whether it's a DeFi platform, NFT marketplace, or enterprise SaaS solution, I'm always excited to tackle new challenges!
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={aboutInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.9 }}
+              className="text-amber-800 font-semibold italic"
+            >
+              "Building the future, one line of code at a time." 💻✨
+            </motion.p>
+          </motion.div>
+
+          {/* Stats Row */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={aboutInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 1 }}
+            className="grid grid-cols-3 gap-4 mt-8 pt-8 border-t-2 border-amber-300"
+          >
+            {[
+              { number: "4+", label: "Startups" },
+              { number: "10+", label: "Projects" },
+              { number: "100%", label: "Dedication" }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ scale: 0 }}
+                animate={aboutInView ? { scale: 1 } : {}}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: 1.1 + (index * 0.1),
+                  type: "spring",
+                  stiffness: 200
+                }}
+                whileHover={{ scale: 1.1 }}
+                className="text-center"
+              >
+                <p className="text-2xl sm:text-3xl font-bold text-amber-900 comic-font">
+                  {stat.number}
+                </p>
+                <p className="text-sm sm:text-base text-gray-600 font-semibold">
+                  {stat.label}
+                </p>
+              </motion.div>
+            ))}
           </motion.div>
         </motion.div>
       </motion.div>
