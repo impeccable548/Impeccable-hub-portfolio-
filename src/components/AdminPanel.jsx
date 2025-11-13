@@ -561,9 +561,220 @@ const ProjectsTab = ({
 }
 
 // Skills Tab (Similar structure, condensed for space)
-const SkillsTab = ({ skills, addSkill, updateSkill, deleteSkill, uploadSkillIcon, editingItem, setEditingItem, showAddForm, setShowAddForm }) => {
-  // Similar to ProjectsTab but for skills
-  return <div className="text-center py-8 text-gray-600">Skills management coming soon...</div>
+const SkillsTab = ({ 
+  skills, 
+  addSkill, 
+  updateSkill, 
+  deleteSkill, 
+  uploadSkillIcon, 
+  editingItem, 
+  setEditingItem, 
+  showAddForm, 
+  setShowAddForm 
+}) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    level: 5,
+    icon_url: ''
+  })
+  const [uploading, setUploading] = useState(false)
+
+  const handleIconUpload = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    setUploading(true)
+    const { url } = await uploadSkillIcon(file, formData.name)
+    if (url) {
+      setFormData({ ...formData, icon_url: url })
+    }
+    setUploading(false)
+  }
+
+  const handleSubmit = async () => {
+    const skillData = {
+      name: formData.name,
+      level: parseInt(formData.level),
+      icon_url: formData.icon_url || null
+    }
+
+    if (editingItem) {
+      await updateSkill(editingItem.id, skillData)
+      setEditingItem(null)
+    } else {
+      await addSkill(skillData)
+      setShowAddForm(false)
+    }
+
+    setFormData({
+      name: '',
+      level: 5,
+      icon_url: ''
+    })
+  }
+
+  const handleEdit = (skill) => {
+    setEditingItem(skill)
+    setFormData({
+      name: skill.name,
+      level: skill.level,
+      icon_url: skill.icon_url || ''
+    })
+    setShowAddForm(true)
+  }
+
+  const handleDelete = async (skill) => {
+    if (window.confirm(`Delete "${skill.name}"?`)) {
+      await deleteSkill(skill.id, skill.icon_url)
+    }
+  }
+
+  return (
+    <div>
+      {/* Add Button */}
+      {!showAddForm && (
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setShowAddForm(true)}
+          className="mb-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 shadow-lg"
+        >
+          <Plus className="w-5 h-5" />
+          Add New Skill
+        </motion.button>
+      )}
+
+      {/* Add/Edit Form */}
+      {showAddForm && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white p-6 rounded-xl shadow-lg border-2 border-purple-300 mb-6"
+        >
+          <h4 className="text-xl font-bold text-purple-900 mb-4">
+            {editingItem ? 'Edit Skill' : 'Add New Skill'}
+          </h4>
+          
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Skill Name *"
+              value={formData.name}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-purple-600 focus:outline-none"
+            />
+            
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Skill Level (1-10): {formData.level}
+              </label>
+              <input
+                type="range"
+                min="1"
+                max="10"
+                value={formData.level}
+                onChange={(e) => setFormData({...formData, level: e.target.value})}
+                className="w-full"
+              />
+              <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <span>Beginner</span>
+                <span>Intermediate</span>
+                <span>Expert</span>
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Custom Icon (Optional)
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleIconUpload}
+                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-purple-600 focus:outline-none"
+              />
+              {uploading && <p className="text-sm text-purple-600 mt-2">Uploading...</p>}
+              {formData.icon_url && (
+                <img src={formData.icon_url} alt="Preview" className="mt-2 h-16 w-16 rounded-lg object-contain" />
+              )}
+            </div>
+            
+            <div className="flex gap-3">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleSubmit}
+                disabled={!formData.name}
+                className="flex-1 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white py-2 rounded-lg font-bold flex items-center justify-center gap-2"
+              >
+                <Save className="w-4 h-4" />
+                {editingItem ? 'Update' : 'Add'} Skill
+              </motion.button>
+              
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  setShowAddForm(false)
+                  setEditingItem(null)
+                  setFormData({
+                    name: '',
+                    level: 5,
+                    icon_url: ''
+                  })
+                }}
+                className="px-6 bg-gray-400 hover:bg-gray-500 text-white py-2 rounded-lg font-bold"
+              >
+                Cancel
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Skills List */}
+      <div className="grid sm:grid-cols-3 md:grid-cols-4 gap-4">
+        {skills.map((skill) => (
+          <motion.div
+            key={skill.id}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white p-4 rounded-xl shadow-lg border-2 border-gray-200 hover:border-purple-400 transition-colors text-center"
+          >
+            {skill.icon_url ? (
+              <img src={skill.icon_url} alt={skill.name} className="w-16 h-16 mx-auto mb-2 object-contain" />
+            ) : (
+              <div className="text-4xl mb-2">💻</div>
+            )}
+            <h5 className="font-bold text-lg text-gray-800 mb-1">{skill.name}</h5>
+            <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
+              <div 
+                className="bg-purple-600 h-2 rounded-full"
+                style={{ width: `${(skill.level / 10) * 100}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-600 mb-3">Level {skill.level}/10</p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleEdit(skill)}
+                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded text-xs font-semibold flex items-center justify-center gap-1"
+              >
+                <Edit className="w-3 h-3" />
+                Edit
+              </button>
+              <button
+                onClick={() => handleDelete(skill)}
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded text-xs font-semibold flex items-center justify-center gap-1"
+              >
+                <Trash2 className="w-3 h-3" />
+                Delete
+              </button>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 // Messages Tab
