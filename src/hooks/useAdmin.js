@@ -34,35 +34,8 @@ export const useAdmin = () => {
     }
   }
 
-  // Login with password (simple password check)
-  const login = async (password) => {
-    try {
-      setLoading(true)
-      
-      // Simple password validation
-      if (password === ADMIN_CONFIG.password) {
-        // For this simple auth, we'll just set a flag
-        // In production, you'd want proper Supabase auth
-        localStorage.setItem('admin_authenticated', 'true')
-        setIsAuthenticated(true)
-        setIsAdmin(true)
-        toast.success('Welcome back, Providence! 👋')
-        return { success: true, error: null }
-      } else {
-        toast.error('Invalid password!')
-        return { success: false, error: 'Invalid password' }
-      }
-    } catch (err) {
-      console.error('Login error:', err)
-      toast.error('Login failed')
-      return { success: false, error: err }
-    } finally {
-      setLoading(false)
-    }
-  }
-
   // Login with email and password (Supabase auth)
-  const loginWithEmail = async (email, password) => {
+  const login = async (email, password) => {
     try {
       setLoading(true)
       const { data, error } = await auth.signIn(email, password)
@@ -77,16 +50,16 @@ export const useAdmin = () => {
       
       if (isUserAdmin) {
         toast.success('Welcome back, Providence! 👋')
+        return { success: true, error: null }
       } else {
         toast.error('You are not authorized as admin')
         await logout()
         return { success: false, error: 'Not authorized' }
       }
-      
-      return { success: true, error: null }
     } catch (err) {
       console.error('Login error:', err)
-      toast.error('Login failed. Check your credentials.')
+      const errorMsg = err.message || 'Login failed. Check your credentials.'
+      toast.error(errorMsg)
       return { success: false, error: err }
     } finally {
       setLoading(false)
@@ -96,9 +69,6 @@ export const useAdmin = () => {
   // Logout
   const logout = async () => {
     try {
-      localStorage.removeItem('admin_authenticated')
-      
-      // Also sign out from Supabase if logged in
       await auth.signOut()
       
       setIsAuthenticated(false)
@@ -115,13 +85,6 @@ export const useAdmin = () => {
 
   // Check if admin on mount
   useEffect(() => {
-    const isAdminAuth = localStorage.getItem('admin_authenticated') === 'true'
-    if (isAdminAuth) {
-      setIsAuthenticated(true)
-      setIsAdmin(true)
-    }
-    
-    // Also check Supabase auth
     checkAuth()
   }, [])
 
@@ -131,7 +94,6 @@ export const useAdmin = () => {
     loading,
     user,
     login,
-    loginWithEmail,
     logout,
     checkAuth
   }
