@@ -15,8 +15,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 
 // Admin configuration
 export const ADMIN_CONFIG = {
-  uid: import.meta.env.VITE_ADMIN_UID,
-  password: import.meta.env.VITE_ADMIN_PASSWORD // From .env.local, NOT hardcoded!
+  uid: import.meta.env.VITE_ADMIN_UID
 }
 
 // Storage helpers
