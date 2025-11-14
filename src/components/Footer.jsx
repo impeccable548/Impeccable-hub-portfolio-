@@ -7,15 +7,15 @@ const Footer = () => {
   const { scrollToTop } = useScroll()
   
   // Get credentials from environment
-  const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER
-  const email = import.meta.env.VITE_EMAIL
+  const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '2348069711972'
+  const email = import.meta.env.VITE_EMAIL || 'igheleraro2@gmail.com'
 
   const currentYear = new Date().getFullYear()
 
   const socialLinks = [
     { 
       icon: Github, 
-      href: 'https://github.com/yourusername', 
+      href: 'https://github.com/impeccable548', 
       label: 'GitHub',
       color: 'hover:bg-gray-700'
     },
@@ -27,9 +27,9 @@ const Footer = () => {
     },
     { 
       icon: Twitter, 
-      href: 'https://twitter.com/yourusername', 
-      label: 'Twitter',
-      color: 'hover:bg-sky-500'
+      href: 'https://x.com/impeccable_477', 
+      label: 'X (Twitter)',
+      color: 'hover:bg-gray-800'
     }
   ]
 
