@@ -208,9 +208,9 @@ const Hero = () => {
           className="flex gap-4 justify-center"
         >
           {[
-            { icon: Github, href: 'https://github.com/yourusername', label: 'GitHub' },
+            { icon: Github, href: 'https://github.com/impeccable548', label: 'GitHub' },
             { icon: Linkedin, href: 'https://linkedin.com/in/yourusername', label: 'LinkedIn' },
-            { icon: Twitter, href: 'https://twitter.com/yourusername', label: 'Twitter' }
+            { icon: Twitter, href: 'https://x.com/impeccable_477', label: 'X (Twitter)' }
           ].map((social, index) => (
             <motion.a
               key={index}
