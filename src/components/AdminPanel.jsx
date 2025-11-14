@@ -275,10 +275,12 @@ const AdminContent = ({
                 : 'bg-white text-purple-900 hover:bg-purple-100'
             }`}
           >
-            {tab.label} 
-            <span className="ml-2 bg-white/20 px-2 py-1 rounded-full text-xs">
-              {tab.count}
-            </span>
+            {tab.label}
+            {tab.count > 0 && (
+              <span className="ml-2 bg-white/20 px-2 py-1 rounded-full text-xs">
+                {tab.count}
+              </span>
+            )}
           </motion.button>
         ))}
       </div>
@@ -565,6 +567,7 @@ const ProjectsTab = ({
   )
 }
 
+
 // Skills Tab (Similar structure, condensed for space)
 const SkillsTab = ({ 
   skills, 
@@ -815,10 +818,10 @@ const MessagesTab = ({ messages }) => (
 
 // Settings Tab
 const SettingsTab = () => {
-  const [profilePhoto, setProfilePhoto] = useState(null)
-  const [resumePDF, setResumePDF] = useState(null)
-  const [uploadingPhoto, setUploadingPhoto] = useState(false)
-  const [uploadingResume, setUploadingResume] = useState(false)
+  const [profilePhoto, setProfilePhoto] = React.useState(null)
+  const [resumePDF, setResumePDF] = React.useState(null)
+  const [uploadingPhoto, setUploadingPhoto] = React.useState(false)
+  const [uploadingResume, setUploadingResume] = React.useState(false)
   const [socialLinks, setSocialLinks] = useState({
     github: 'impeccable548',
     linkedin: '',
