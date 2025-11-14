@@ -47,7 +47,7 @@ const Hero = () => {
   }))
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative pt-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="min-h-screen flex flex-col items-center justify-center relative pt-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
       {/* Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100" />
 
@@ -79,10 +79,10 @@ const Hero = () => {
         ))}
       </div>
 
-      {/* Main Content */}
+      {/* Main Hero Content */}
       <motion.div
         style={{ transform: `translateY(${parallaxY}px)` }}
-        className="text-center z-10 max-w-5xl mx-auto"
+        className="text-center z-10 max-w-5xl mx-auto w-full"
       >
         {/* Profile Photo */}
         <motion.div
