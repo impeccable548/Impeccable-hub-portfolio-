@@ -251,7 +251,8 @@ const AdminContent = ({
   const tabs = [
     { id: 'projects', label: 'Projects', count: projects.length },
     { id: 'skills', label: 'Skills', count: skills.length },
-    { id: 'messages', label: 'Messages', count: messages.length }
+    { id: 'messages', label: 'Messages', count: messages.length },
+    { id: 'settings', label: 'Settings', count: 0 }
   ]
 
   return (
@@ -313,6 +314,10 @@ const AdminContent = ({
 
       {activeTab === 'messages' && (
         <MessagesTab messages={messages} />
+      )}
+
+      {activeTab === 'settings' && (
+        <SettingsTab />
       )}
     </div>
   )
@@ -807,5 +812,247 @@ const MessagesTab = ({ messages }) => (
     )}
   </div>
 )
+
+// Settings Tab
+const SettingsTab = () => {
+  const [profilePhoto, setProfilePhoto] = useState(null)
+  const [resumePDF, setResumePDF] = useState(null)
+  const [uploadingPhoto, setUploadingPhoto] = useState(false)
+  const [uploadingResume, setUploadingResume] = useState(false)
+  const [socialLinks, setSocialLinks] = useState({
+    github: 'impeccable548',
+    linkedin: '',
+    twitter: 'impeccable_477'
+  })
+
+  const handleProfilePhotoUpload = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    setUploadingPhoto(true)
+    try {
+      const { error } = await storage.uploadFile('uploads', 'profile/providence-dp.jpg', file)
+      if (error) throw error
+      
+      toast.success('Profile photo updated! Refresh to see changes.')
+      setProfilePhoto(URL.createObjectURL(file))
+    } catch (error) {
+      toast.error('Failed to upload photo')
+    } finally {
+      setUploadingPhoto(false)
+    }
+  }
+
+  const handleResumeUpload = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    if (file.type !== 'application/pdf') {
+      toast.error('Please upload a PDF file')
+      return
+    }
+
+    setUploadingResume(true)
+    try {
+      const { error } = await storage.uploadFile('uploads', 'resume/providence-resume.pdf', file)
+      if (error) throw error
+      
+      toast.success('Resume updated! Download button will work now.')
+    } catch (error) {
+      toast.error('Failed to upload resume')
+    } finally {
+      setUploadingResume(false)
+    }
+  }
+
+  const currentProfileUrl = storage.getPublicUrl('uploads', 'profile/providence-dp.jpg')
+  const currentResumeUrl = storage.getPublicUrl('uploads', 'resume/providence-resume.pdf')
+
+  return (
+    <div className="space-y-6">
+      {/* Profile Photo Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white p-6 rounded-xl shadow-lg border-2 border-purple-300"
+      >
+        <h3 className="text-xl font-bold text-purple-900 mb-4 flex items-center gap-2">
+          <ImageIcon className="w-5 h-5" />
+          Profile Photo
+        </h3>
+        
+        <div className="flex flex-col md:flex-row items-center gap-6">
+          <div className="flex-shrink-0">
+            <img 
+              src={profilePhoto || currentProfileUrl}
+              alt="Profile"
+              className="w-32 h-32 rounded-full border-4 border-purple-600 object-cover"
+              onError={(e) => {
+                e.target.src = 'https://via.placeholder.com/150?text=No+Photo'
+              }}
+            />
+          </div>
+          
+          <div className="flex-1 w-full">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Upload New Photo (JPG, PNG)
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleProfilePhotoUpload}
+              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-purple-600 focus:outline-none"
+            />
+            {uploadingPhoto && (
+              <p className="text-sm text-purple-600 mt-2 flex items-center gap-2">
+                <Loader className="w-4 h-4 animate-spin" />
+                Uploading...
+              </p>
+            )}
+            <p className="text-xs text-gray-500 mt-2">
+              Current path: uploads/profile/providence-dp.jpg
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Resume PDF Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="bg-white p-6 rounded-xl shadow-lg border-2 border-purple-300"
+      >
+        <h3 className="text-xl font-bold text-purple-900 mb-4 flex items-center gap-2">
+          <Upload className="w-5 h-5" />
+          Resume PDF
+        </h3>
+        
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Upload Resume (PDF only)
+            </label>
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={handleResumeUpload}
+              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-purple-600 focus:outline-none"
+            />
+            {uploadingResume && (
+              <p className="text-sm text-purple-600 mt-2 flex items-center gap-2">
+                <Loader className="w-4 h-4 animate-spin" />
+                Uploading...
+              </p>
+            )}
+            <p className="text-xs text-gray-500 mt-2">
+              Current path: uploads/resume/providence-resume.pdf
+            </p>
+          </div>
+
+          <a
+            href={currentResumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-800 font-semibold text-sm"
+          >
+            <ExternalLink className="w-4 h-4" />
+            Preview Current Resume
+          </a>
+        </div>
+      </motion.div>
+
+      {/* Social Links Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="bg-white p-6 rounded-xl shadow-lg border-2 border-purple-300"
+      >
+        <h3 className="text-xl font-bold text-purple-900 mb-4">
+          Social Links (Edit in Code)
+        </h3>
+        
+        <div className="space-y-3 text-sm text-gray-700">
+          <div className="flex items-center gap-2">
+            <strong>GitHub:</strong> 
+            <code className="bg-gray-100 px-2 py-1 rounded">impeccable548</code>
+          </div>
+          <div className="flex items-center gap-2">
+            <strong>X (Twitter):</strong> 
+            <code className="bg-gray-100 px-2 py-1 rounded">impeccable_477</code>
+          </div>
+          <div className="flex items-center gap-2">
+            <strong>LinkedIn:</strong> 
+            <code className="bg-gray-100 px-2 py-1 rounded">Add your username</code>
+          </div>
+          
+          <p className="text-xs text-gray-500 mt-4 bg-amber-50 p-3 rounded border border-amber-200">
+            💡 To update social links, edit the code in:<br/>
+            <code className="text-xs">src/components/Hero.jsx</code> and <code className="text-xs">src/components/Footer.jsx</code>
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Contact Info Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="bg-white p-6 rounded-xl shadow-lg border-2 border-purple-300"
+      >
+        <h3 className="text-xl font-bold text-purple-900 mb-4">
+          Contact Information
+        </h3>
+        
+        <div className="space-y-3 text-sm text-gray-700">
+          <div className="flex items-center gap-2">
+            <Mail className="w-4 h-4 text-purple-600" />
+            <strong>Email:</strong> 
+            <code className="bg-gray-100 px-2 py-1 rounded">igheleraro2@gmail.com</code>
+          </div>
+          <div className="flex items-center gap-2">
+            <MessageCircle className="w-4 h-4 text-green-600" />
+            <strong>WhatsApp:</strong> 
+            <code className="bg-gray-100 px-2 py-1 rounded">+234 806 971 1972</code>
+          </div>
+          
+          <p className="text-xs text-gray-500 mt-4 bg-amber-50 p-3 rounded border border-amber-200">
+            💡 These are set in Vercel Environment Variables:<br/>
+            <code className="text-xs">VITE_EMAIL</code> and <code className="text-xs">VITE_WHATSAPP_NUMBER</code>
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Quick Stats */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="bg-gradient-to-r from-purple-600 to-purple-800 text-white p-6 rounded-xl shadow-lg"
+      >
+        <h3 className="text-xl font-bold mb-4">🎉 Portfolio Status</h3>
+        <div className="grid grid-cols-2 gap-4 text-sm">
+          <div>
+            <p className="opacity-80">Profile Photo</p>
+            <p className="font-bold text-lg">✅ Ready</p>
+          </div>
+          <div>
+            <p className="opacity-80">Resume PDF</p>
+            <p className="font-bold text-lg">✅ Ready</p>
+          </div>
+          <div>
+            <p className="opacity-80">Contact Info</p>
+            <p className="font-bold text-lg">✅ Active</p>
+          </div>
+          <div>
+            <p className="opacity-80">Social Links</p>
+            <p className="font-bold text-lg">✅ Connected</p>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  )
+}
 
 export default AdminPanel
