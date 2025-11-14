@@ -259,28 +259,28 @@ const Hero = () => {
         </motion.div>
       </motion.div>
 
-      {/* About Me Section - Fades in on Scroll */}
+      {/* About Me Section - Now positioned right below hero */}
       <motion.div
         ref={aboutRef}
-        initial={{ opacity: 0, y: 100 }}
+        initial={{ opacity: 0, y: 50 }}
         animate={aboutInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative z-10 max-w-4xl mx-auto mt-32 mb-16"
+        className="relative z-10 max-w-4xl mx-auto mt-16 sm:mt-20 px-4"
       >
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={aboutInView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 sm:p-10 lg:p-12 border-4 border-amber-700"
+          className="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10 border-4 border-amber-700"
         >
           {/* About Me Header */}
           <motion.h3
             initial={{ opacity: 0, x: -50 }}
             animate={aboutInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-3xl sm:text-4xl font-bold text-amber-900 mb-6 comic-font flex items-center gap-3"
+            className="text-2xl sm:text-3xl md:text-4xl font-bold text-amber-900 mb-4 sm:mb-6 comic-font flex items-center gap-2 sm:gap-3"
           >
-            <span className="text-4xl">👨‍💻</span>
+            <span className="text-3xl sm:text-4xl">👨‍💻</span>
             About Me
           </motion.h3>
 
@@ -289,7 +289,7 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={aboutInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="space-y-4 text-gray-700 text-base sm:text-lg leading-relaxed"
+            className="space-y-3 sm:space-y-4 text-gray-700 text-sm sm:text-base lg:text-lg leading-relaxed"
           >
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -319,7 +319,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={aboutInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.9 }}
-              className="text-amber-800 font-semibold italic"
+              className="text-amber-800 font-semibold italic text-base sm:text-lg"
             >
               "Building the future, one line of code at a time." 💻✨
             </motion.p>
@@ -330,7 +330,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={aboutInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 1 }}
-            className="grid grid-cols-3 gap-4 mt-8 pt-8 border-t-2 border-amber-300"
+            className="grid grid-cols-3 gap-3 sm:gap-4 mt-6 sm:mt-8 pt-6 sm:pt-8 border-t-2 border-amber-300"
           >
             {[
               { number: "4+", label: "Startups" },
@@ -350,10 +350,10 @@ const Hero = () => {
                 whileHover={{ scale: 1.1 }}
                 className="text-center"
               >
-                <p className="text-2xl sm:text-3xl font-bold text-amber-900 comic-font">
+                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-900 comic-font">
                   {stat.number}
                 </p>
-                <p className="text-sm sm:text-base text-gray-600 font-semibold">
+                <p className="text-xs sm:text-sm md:text-base text-gray-600 font-semibold">
                   {stat.label}
                 </p>
               </motion.div>
