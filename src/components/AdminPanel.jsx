@@ -567,7 +567,6 @@ const ProjectsTab = ({
   )
 }
 
-
 // Skills Tab (Similar structure, condensed for space)
 const SkillsTab = ({ 
   skills, 
@@ -604,6 +603,7 @@ const SkillsTab = ({
       name: formData.name,
       level: parseInt(formData.level),
       icon_url: formData.icon_url || null
+      // Color will be auto-assigned if not provided!
     }
 
     if (editingItem) {
@@ -869,7 +869,7 @@ const SettingsTab = () => {
   }
 
   const currentProfileUrl = storage.getPublicUrl('uploads', 'profile/providence-dp.jpg')
-  const currentResumeUrl = storage.getPublicUrl('uploads', 'resume/providence-resume.pdf')
+  const currentResumeUrl = storage.getPublicUrl('uploads', 'resume/Providence Igheleraro - Resume (2).pdf')
 
   return (
     <div className="space-y-6">
