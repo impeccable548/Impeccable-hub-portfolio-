@@ -169,7 +169,7 @@ const SkillCard = ({ skill, defaultColor, variants }) => {
   }
 
   // Get skill color (from database or default)
-  const skillColor = skill.color || defaultColor
+  const skillColor = skill.color || defaultColor || 'bg-purple-600'
 
   return (
     <motion.div
@@ -220,17 +220,17 @@ const SkillCard = ({ skill, defaultColor, variants }) => {
             }}
             className="text-4xl sm:text-5xl mb-3"
           >
-            💻
+            {skill.name?.charAt(0)?.toUpperCase() || '💻'}
           </motion.div>
         )}
 
         {/* Skill Name */}
         <p className="font-bold text-sm sm:text-base lg:text-lg mb-2 drop-shadow-md">
-          {skill.name}
+          {skill.name || 'Unknown Skill'}
         </p>
 
         {/* Skill Level Indicator */}
-        {skill.level && (
+        {skill.level != null && (
           <div className="mt-3">
             {/* Level Bar */}
             <div className="w-full bg-white/30 rounded-full h-2 overflow-hidden mb-1">
