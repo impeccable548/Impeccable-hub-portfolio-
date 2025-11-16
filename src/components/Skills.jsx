@@ -8,6 +8,15 @@ const Skills = () => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
+  // DEBUG: Log skills data
+  React.useEffect(() => {
+    console.log('🔍 Skills data:', skills)
+    console.log('📊 Number of skills:', skills.length)
+    if (skills.length > 0) {
+      console.log('📝 First skill:', skills[0])
+    }
+  }, [skills])
+
   // Default skill colors if none specified in database
   const defaultColors = [
     'bg-green-600',
