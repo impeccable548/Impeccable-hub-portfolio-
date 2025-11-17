@@ -8,55 +8,10 @@ const Skills = () => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
-  // DEBUG: Log skills data
   React.useEffect(() => {
-    console.log('🔍 Skills data:', skills)
-    console.log('📊 Number of skills:', skills.length)
-    if (skills.length > 0) {
-      console.log('📝 First skill:', skills[0])
-    }
+    console.log('Skills data:', skills)
+    console.log('Skills count:', skills?.length)
   }, [skills])
-
-  // Default skill colors if none specified in database
-  const defaultColors = [
-    'bg-green-600',
-    'bg-blue-600',
-    'bg-purple-600',
-    'bg-red-600',
-    'bg-yellow-600',
-    'bg-pink-600',
-    'bg-indigo-600',
-    'bg-teal-600'
-  ]
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15
-      }
-    }
-  }
-
-  const itemVariants = {
-    hidden: { 
-      opacity: 0,
-      scale: 0,
-      rotate: -180
-    },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      rotate: 0,
-      transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 15
-      }
-    }
-  }
 
   if (loading) {
     return (
@@ -76,118 +31,44 @@ const Skills = () => {
       className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100"
     >
       <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: -50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
           className="text-center mb-12 sm:mb-16"
         >
-          <motion.h2
-            animate={isInView ? {
-              scale: [1, 1.05, 1],
-            } : {}}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-amber-900 mb-4 comic-font"
-          >
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-amber-900 mb-4 comic-font">
             Tech Stack 💻
-          </motion.h2>
+          </h2>
           <p className="text-lg sm:text-xl text-amber-800 max-w-2xl mx-auto">
             Technologies I work with to build amazing products
           </p>
         </motion.div>
 
-        {/* Skills Grid */}
         {!skills || skills.length === 0 ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-12"
-          >
+          <div className="text-center py-12">
             <p className="text-xl text-amber-800">No skills added yet.</p>
-          </motion.div>
+          </div>
         ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.6 }}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6"
-          >
-            {skills.map((skill, idx) => {
-              console.log(`🎨 Rendering skill ${idx}:`, skill.name, skill.color)
-              return (
-                <SkillCard 
-                  key={skill.id || idx} 
-                  skill={skill}
-                />
-              )
-            })}
-          </motion.div>
-        )}
-          </motion.div>
-        )}
-
-        {/* Skill Level Legend */}
-        {skills.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="mt-12 sm:mt-16 text-center"
-          >
-            <p className="text-sm sm:text-base text-amber-700 font-semibold mb-4">
-              Proficiency Levels
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-              {[
-                { level: 'Beginner', range: '1-3', color: 'bg-yellow-500' },
-                { level: 'Intermediate', range: '4-6', color: 'bg-blue-500' },
-                { level: 'Advanced', range: '7-8', color: 'bg-purple-500' },
-                { level: 'Expert', range: '9-10', color: 'bg-green-500' }
-              ].map((item) => (
-                <motion.div
-                  key={item.level}
-                  whileHover={{ scale: 1.1 }}
-                  className="flex items-center gap-2"
-                >
-                  <div className={`w-3 h-3 ${item.color} rounded-full`} />
-                  <span className="text-xs sm:text-sm text-gray-700">
-                    <strong>{item.level}</strong> ({item.range})
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+            {skills.map((skill) => (
+              <SkillCard key={skill.id} skill={skill} />
+            ))}
+          </div>
         )}
       </div>
     </section>
   )
 }
 
-// Individual Skill Card Component - SIMPLIFIED
 const SkillCard = ({ skill }) => {
   const [imageError, setImageError] = React.useState(false)
-  
-  // Get color with guaranteed fallback
   const cardColor = skill?.color || 'bg-blue-600'
   const skillLevel = skill?.level || 5
   const skillName = skill?.name || 'Skill'
-  
-  console.log('🔵 SkillCard render:', skillName, 'Color:', cardColor, 'Level:', skillLevel)
-  
+
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      whileHover={{ scale: 1.1 }}
-      transition={{ duration: 0.3 }}
-      className={`${cardColor} text-white rounded-2xl p-4 sm:p-6 text-center shadow-2xl border-4 border-amber-900 cursor-pointer`}
-    >
-      {/* Icon */}
+    <div className={`${cardColor} text-white rounded-2xl p-4 sm:p-6 text-center shadow-2xl border-4 border-amber-900`}>
       <div className="mb-3">
         {skill?.icon_url && !imageError ? (
           <img
@@ -203,24 +84,21 @@ const SkillCard = ({ skill }) => {
         )}
       </div>
 
-      {/* Name */}
       <p className="font-bold text-sm sm:text-base lg:text-lg mb-2">
         {skillName}
       </p>
 
-      {/* Level Bar */}
       <div className="w-full bg-white/30 rounded-full h-2 mb-1">
         <div 
-          className="bg-white h-2 rounded-full transition-all"
+          className="bg-white h-2 rounded-full"
           style={{ width: `${(skillLevel / 10) * 100}%` }}
         />
       </div>
       
-      {/* Level Text */}
       <p className="text-xs font-semibold opacity-90">
         Level {skillLevel}/10
       </p>
-    </motion.div>
+    </div>
   )
 }
 
