@@ -102,7 +102,7 @@ const Skills = () => {
         </motion.div>
 
         {/* Skills Grid */}
-        {skills.length === 0 ? (
+        {!skills || skills.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -112,18 +112,22 @@ const Skills = () => {
           </motion.div>
         ) : (
           <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.6 }}
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6"
           >
-            {skills.map((skill) => (
-              <SkillCard 
-                key={skill.id} 
-                skill={skill}
-                variants={itemVariants}
-              />
-            ))}
+            {skills.map((skill, idx) => {
+              console.log(`🎨 Rendering skill ${idx}:`, skill.name, skill.color)
+              return (
+                <SkillCard 
+                  key={skill.id || idx} 
+                  skill={skill}
+                />
+              )
+            })}
+          </motion.div>
+        )}
           </motion.div>
         )}
 
@@ -164,109 +168,58 @@ const Skills = () => {
   )
 }
 
-// Individual Skill Card Component
-const SkillCard = ({ skill, variants }) => {
+// Individual Skill Card Component - SIMPLIFIED
+const SkillCard = ({ skill }) => {
   const [imageError, setImageError] = React.useState(false)
   
-  // Determine skill level color
-  const getLevelColor = (level) => {
-    if (level <= 3) return 'bg-yellow-500'
-    if (level <= 6) return 'bg-blue-500'
-    if (level <= 8) return 'bg-purple-500'
-    return 'bg-green-500'
-  }
-
-  // FIXED: Get skill color with proper fallback
-  const skillColor = skill.color || 'bg-blue-600'
+  // Get color with guaranteed fallback
+  const cardColor = skill?.color || 'bg-blue-600'
+  const skillLevel = skill?.level || 5
+  const skillName = skill?.name || 'Skill'
   
-  console.log('🎨 Skill Card:', skill.name, 'Color:', skillColor)
-
+  console.log('🔵 SkillCard render:', skillName, 'Color:', cardColor, 'Level:', skillLevel)
+  
   return (
     <motion.div
-      variants={variants}
-      whileHover={{ 
-        scale: 1.15,
-        rotate: [0, -5, 5, 0],
-        transition: { duration: 0.3 }
-      }}
-      whileTap={{ scale: 0.95 }}
-      className={`${skillColor} text-white rounded-2xl p-4 sm:p-6 text-center shadow-xl border-4 border-amber-900 cursor-pointer relative overflow-hidden group`}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.1 }}
+      transition={{ duration: 0.3 }}
+      className={`${cardColor} text-white rounded-2xl p-4 sm:p-6 text-center shadow-2xl border-4 border-amber-900 cursor-pointer`}
     >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity">
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.1) 10px, rgba(255,255,255,.1) 20px)'
-        }} />
-      </div>
-
-      {/* Skill Icon/Image */}
-      <div className="relative z-10">
-        {skill.icon_url && !imageError ? (
-          <motion.img
+      {/* Icon */}
+      <div className="mb-3">
+        {skill?.icon_url && !imageError ? (
+          <img
             src={skill.icon_url}
-            alt={skill.name}
+            alt={skillName}
             onError={() => setImageError(true)}
-            animate={{ 
-              rotate: [0, 10, -10, 0],
-              scale: [1, 1.1, 1]
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 object-contain drop-shadow-lg"
+            className="w-12 h-12 sm:w-16 sm:h-16 mx-auto object-contain"
           />
         ) : (
-          <motion.div
-            animate={{ 
-              rotate: [0, 10, -10, 0],
-              scale: [1, 1.1, 1]
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="text-4xl sm:text-5xl mb-3"
-          >
-            {skill.name?.charAt(0)?.toUpperCase() || '💻'}
-          </motion.div>
-        )}
-
-        {/* Skill Name */}
-        <p className="font-bold text-sm sm:text-base lg:text-lg mb-2 drop-shadow-md">
-          {skill.name || 'Unknown Skill'}
-        </p>
-
-        {/* Skill Level Indicator */}
-        {skill.level != null && (
-          <div className="mt-3">
-            {/* Level Bar */}
-            <div className="w-full bg-white/30 rounded-full h-2 overflow-hidden mb-1">
-              <motion.div
-                initial={{ width: 0 }}
-                whileInView={{ width: `${(skill.level / 10) * 100}%` }}
-                transition={{ duration: 1, delay: 0.2 }}
-                className={`h-full ${getLevelColor(skill.level)} rounded-full`}
-              />
-            </div>
-            
-            {/* Level Number */}
-            <p className="text-xs font-semibold opacity-90">
-              Level {skill.level}/10
-            </p>
+          <div className="text-4xl sm:text-5xl">
+            {skillName.charAt(0).toUpperCase()}
           </div>
         )}
       </div>
 
-      {/* Hover Glow Effect */}
-      <motion.div
-        initial={{ scale: 0 }}
-        whileHover={{ scale: 1 }}
-        transition={{ duration: 0.3 }}
-        className="absolute inset-0 bg-white/10 rounded-2xl"
-      />
+      {/* Name */}
+      <p className="font-bold text-sm sm:text-base lg:text-lg mb-2">
+        {skillName}
+      </p>
+
+      {/* Level Bar */}
+      <div className="w-full bg-white/30 rounded-full h-2 mb-1">
+        <div 
+          className="bg-white h-2 rounded-full transition-all"
+          style={{ width: `${(skillLevel / 10) * 100}%` }}
+        />
+      </div>
+      
+      {/* Level Text */}
+      <p className="text-xs font-semibold opacity-90">
+        Level {skillLevel}/10
+      </p>
     </motion.div>
   )
 }
