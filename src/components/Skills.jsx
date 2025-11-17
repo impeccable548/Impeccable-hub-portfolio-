@@ -50,11 +50,51 @@ const Skills = () => {
             <p className="text-xl text-amber-800">No skills added yet.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
-            {skills.map((skill) => (
-              <SkillCard key={skill.id} skill={skill} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+              {skills.map((skill) => (
+                <SkillCard key={skill.id} skill={skill} />
+              ))}
+            </div>
+
+            {/* Proficiency Legend */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="mt-12 sm:mt-16 text-center"
+            >
+              <p className="text-sm sm:text-base text-amber-700 font-semibold mb-4">
+                Proficiency Levels
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full" />
+                  <span className="text-xs sm:text-sm text-gray-700">
+                    <strong>Beginner</strong> (1-3)
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full" />
+                  <span className="text-xs sm:text-sm text-gray-700">
+                    <strong>Intermediate</strong> (4-6)
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-purple-500 rounded-full" />
+                  <span className="text-xs sm:text-sm text-gray-700">
+                    <strong>Advanced</strong> (7-8)
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full" />
+                  <span className="text-xs sm:text-sm text-gray-700">
+                    <strong>Expert</strong> (9-10)
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          </>
         )}
       </div>
     </section>
