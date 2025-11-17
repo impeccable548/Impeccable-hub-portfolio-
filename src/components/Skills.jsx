@@ -117,11 +117,10 @@ const Skills = () => {
             animate={isInView ? "visible" : "hidden"}
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6"
           >
-            {skills.map((skill, index) => (
+            {skills.map((skill) => (
               <SkillCard 
                 key={skill.id} 
                 skill={skill}
-                defaultColor={defaultColors[index % defaultColors.length]}
                 variants={itemVariants}
               />
             ))}
@@ -166,7 +165,7 @@ const Skills = () => {
 }
 
 // Individual Skill Card Component
-const SkillCard = ({ skill, defaultColor, variants }) => {
+const SkillCard = ({ skill, variants }) => {
   const [imageError, setImageError] = React.useState(false)
   
   // Determine skill level color
@@ -177,8 +176,10 @@ const SkillCard = ({ skill, defaultColor, variants }) => {
     return 'bg-green-500'
   }
 
-  // Get skill color (from database or default)
-  const skillColor = skill.color || defaultColor || 'bg-purple-600'
+  // FIXED: Get skill color with proper fallback
+  const skillColor = skill.color || 'bg-blue-600'
+  
+  console.log('🎨 Skill Card:', skill.name, 'Color:', skillColor)
 
   return (
     <motion.div
@@ -189,7 +190,7 @@ const SkillCard = ({ skill, defaultColor, variants }) => {
         transition: { duration: 0.3 }
       }}
       whileTap={{ scale: 0.95 }}
-      className={`${skillColor} text-white rounded-2xl p-4 sm:p-6 text-center shadow-xl border-4 border-amber-800 cursor-pointer relative overflow-hidden group`}
+      className={`${skillColor} text-white rounded-2xl p-4 sm:p-6 text-center shadow-xl border-4 border-amber-900 cursor-pointer relative overflow-hidden group`}
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity">
