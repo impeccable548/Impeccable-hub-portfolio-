@@ -15,29 +15,12 @@ export const useSkills = () => {
       
       if (error) throw error
       
-      // Auto-assign colors if missing
-      const skillsWithColors = (data || []).map((skill, index) => {
-        const defaultColors = [
-          'bg-blue-600',
-          'bg-green-600', 
-          'bg-purple-600',
-          'bg-red-600',
-          'bg-yellow-600',
-          'bg-pink-600',
-          'bg-indigo-600',
-          'bg-teal-600'
-        ]
-        
-        return {
-          ...skill,
-          color: skill.color || defaultColors[index % defaultColors.length]
-        }
-      })
+      console.log('✅ Skills fetched:', data)
       
-      setSkills(skillsWithColors)
+      setSkills(data || [])
       setError(null)
     } catch (err) {
-      console.error('Fetch skills error:', err)
+      console.error('❌ Fetch skills error:', err)
       setError(handleSupabaseError(err))
       toast.error('Failed to load skills')
     } finally {
