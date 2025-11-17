@@ -8,7 +8,6 @@ const Skills = () => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
-  // DEBUG: Log skills data
   React.useEffect(() => {
     console.log('🔍 Skills data:', skills)
     console.log('📊 Number of skills:', skills.length)
@@ -17,7 +16,6 @@ const Skills = () => {
     }
   }, [skills])
 
-  // Default skill colors if none specified in database
   const defaultColors = [
     'bg-green-600',
     'bg-blue-600',
@@ -29,32 +27,21 @@ const Skills = () => {
     'bg-teal-600'
   ]
 
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.15
-      }
+      transition: { staggerChildren: 0.15 }
     }
   }
 
   const itemVariants = {
-    hidden: { 
-      opacity: 0,
-      scale: 0,
-      rotate: -180
-    },
+    hidden: { opacity: 0, scale: 0, rotate: -180 },
     visible: {
       opacity: 1,
       scale: 1,
       rotate: 0,
-      transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 15
-      }
+      transition: { type: "spring", stiffness: 200, damping: 15 }
     }
   }
 
@@ -70,12 +57,13 @@ const Skills = () => {
   }
 
   return (
-    <section 
+    <section
       ref={ref}
       id="skills"
       className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100"
     >
       <div className="max-w-7xl mx-auto">
+
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: -50 }}
@@ -84,18 +72,13 @@ const Skills = () => {
           className="text-center mb-12 sm:mb-16"
         >
           <motion.h2
-            animate={isInView ? {
-              scale: [1, 1.05, 1],
-            } : {}}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
+            animate={isInView ? { scale: [1, 1.05, 1] } : {}}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             className="text-4xl sm:text-5xl lg:text-6xl font-bold text-amber-900 mb-4 comic-font"
           >
             Tech Stack 💻
           </motion.h2>
+
           <p className="text-lg sm:text-xl text-amber-800 max-w-2xl mx-auto">
             Technologies I work with to build amazing products
           </p>
@@ -117,17 +100,12 @@ const Skills = () => {
             transition={{ duration: 0.6 }}
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6"
           >
-            {skills.map((skill, idx) => {
-              console.log(`🎨 Rendering skill ${idx}:`, skill.name, skill.color)
-              return (
-                <SkillCard 
-                  key={skill.id || idx} 
-                  skill={skill}
-                />
-              )
-            })}
-          </motion.div>
-        )}
+            {skills.map((skill, idx) => (
+              <SkillCard
+                key={skill.id || idx}
+                skill={skill}
+              />
+            ))}
           </motion.div>
         )}
 
@@ -142,6 +120,7 @@ const Skills = () => {
             <p className="text-sm sm:text-base text-amber-700 font-semibold mb-4">
               Proficiency Levels
             </p>
+
             <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
               {[
                 { level: 'Beginner', range: '1-3', color: 'bg-yellow-500' },
@@ -163,22 +142,23 @@ const Skills = () => {
             </div>
           </motion.div>
         )}
+
       </div>
     </section>
   )
 }
 
-// Individual Skill Card Component - SIMPLIFIED
+/* -------------------------
+   Skill Card Component
+-------------------------- */
+
 const SkillCard = ({ skill }) => {
   const [imageError, setImageError] = React.useState(false)
-  
-  // Get color with guaranteed fallback
+
   const cardColor = skill?.color || 'bg-blue-600'
   const skillLevel = skill?.level || 5
   const skillName = skill?.name || 'Skill'
-  
-  console.log('🔵 SkillCard render:', skillName, 'Color:', cardColor, 'Level:', skillLevel)
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
@@ -187,7 +167,6 @@ const SkillCard = ({ skill }) => {
       transition={{ duration: 0.3 }}
       className={`${cardColor} text-white rounded-2xl p-4 sm:p-6 text-center shadow-2xl border-4 border-amber-900 cursor-pointer`}
     >
-      {/* Icon */}
       <div className="mb-3">
         {skill?.icon_url && !imageError ? (
           <img
@@ -203,20 +182,17 @@ const SkillCard = ({ skill }) => {
         )}
       </div>
 
-      {/* Name */}
       <p className="font-bold text-sm sm:text-base lg:text-lg mb-2">
         {skillName}
       </p>
 
-      {/* Level Bar */}
       <div className="w-full bg-white/30 rounded-full h-2 mb-1">
-        <div 
+        <div
           className="bg-white h-2 rounded-full transition-all"
           style={{ width: `${(skillLevel / 10) * 100}%` }}
         />
       </div>
-      
-      {/* Level Text */}
+
       <p className="text-xs font-semibold opacity-90">
         Level {skillLevel}/10
       </p>
