@@ -17,7 +17,28 @@ export const useSkills = () => {
       
       console.log('✅ Skills fetched:', data)
       
-      setSkills(data || [])
+      // Auto-assign different colors to each skill
+      const colorPalette = [
+        'bg-blue-600',
+        'bg-green-600',
+        'bg-purple-600',
+        'bg-red-600',
+        'bg-yellow-600',
+        'bg-pink-600',
+        'bg-indigo-600',
+        'bg-teal-600',
+        'bg-orange-600',
+        'bg-cyan-600'
+      ]
+      
+      const skillsWithColors = (data || []).map((skill, index) => ({
+        ...skill,
+        color: colorPalette[index % colorPalette.length]
+      }))
+      
+      console.log('🎨 Skills with colors:', skillsWithColors)
+      
+      setSkills(skillsWithColors)
       setError(null)
     } catch (err) {
       console.error('❌ Fetch skills error:', err)
