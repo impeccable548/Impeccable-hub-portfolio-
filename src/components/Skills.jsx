@@ -107,8 +107,10 @@ const SkillCard = ({ skill }) => {
   const skillLevel = skill?.level || 5
   const skillName = skill?.name || 'Skill'
 
+  console.log('🎨 Card:', skillName, '| Color:', cardColor, '| Level:', skillLevel)
+
   return (
-    <div className={`${cardColor} text-white rounded-2xl p-4 sm:p-6 text-center shadow-2xl border-4 border-amber-900`}>
+    <div className={`${cardColor} text-white rounded-2xl p-4 sm:p-6 text-center shadow-2xl border-4 border-white`}>
       <div className="mb-3">
         {skill?.icon_url && !imageError ? (
           <img
