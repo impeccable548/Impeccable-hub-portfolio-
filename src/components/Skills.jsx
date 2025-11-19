@@ -35,12 +35,12 @@ const Skills = () => {
           initial={{ opacity: 0, y: -50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-16 bg-white/80 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-amber-700 max-w-4xl mx-auto"
+          className="text-center mb-12 sm:mb-16 bg-white backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-amber-700 max-w-4xl mx-auto text-amber-900"
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-amber-900 mb-4 comic-font">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 comic-font">
             Tech Stack 💻
           </h2>
-          <p className="text-lg sm:text-xl text-amber-900 font-semibold">
+          <p className="text-lg sm:text-xl font-semibold">
             Technologies I work with to build amazing products
           </p>
         </motion.div>
@@ -57,7 +57,6 @@ const Skills = () => {
               ))}
             </div>
 
-            {/* Proficiency Legend */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -136,7 +135,7 @@ const SkillCard = ({ skill }) => {
           style={{ width: `${(skillLevel / 10) * 100}%` }}
         />
       </div>
-      
+
       <p className="text-xs font-semibold text-white drop-shadow-sm">
         Level {skillLevel}/10
       </p>
