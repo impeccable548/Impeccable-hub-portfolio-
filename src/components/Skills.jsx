@@ -31,7 +31,7 @@ const Skills = () => {
       className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100"
     >
       <div className="max-w-7xl mx-auto">
-        {/* 🔹 One-line fix: set initial opacity to 1 */}
+        {/* Header fix */}
         <motion.div
           initial={{ opacity: 1, y: -50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -58,9 +58,9 @@ const Skills = () => {
               ))}
             </div>
 
-            {/* Proficiency Legend */}
+            {/* Proficiency Legend fix */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 1, y: 30 }}  // 🔹 changed from 0 → 1
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.8 }}
               className="mt-12 sm:mt-16 text-center"
@@ -137,7 +137,7 @@ const SkillCard = ({ skill }) => {
           style={{ width: `${(skillLevel / 10) * 100}%` }}
         />
       </div>
-      
+
       <p className="text-xs font-semibold text-white drop-shadow-sm">
         Level {skillLevel}/10
       </p>
