@@ -31,16 +31,17 @@ const Skills = () => {
       className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100"
     >
       <div className="max-w-7xl mx-auto">
+        {/* 🔹 One-line fix: set initial opacity to 1 */}
         <motion.div
-          initial={{ opacity: 0, y: -50 }}
+          initial={{ opacity: 1, y: -50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-16 bg-white backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-amber-700 max-w-4xl mx-auto text-amber-900"
+          className="text-center mb-12 sm:mb-16 bg-white/80 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-amber-700 max-w-4xl mx-auto"
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 comic-font">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-amber-900 mb-4 comic-font">
             Tech Stack 💻
           </h2>
-          <p className="text-lg sm:text-xl font-semibold">
+          <p className="text-lg sm:text-xl text-amber-900 font-semibold">
             Technologies I work with to build amazing products
           </p>
         </motion.div>
@@ -57,6 +58,7 @@ const Skills = () => {
               ))}
             </div>
 
+            {/* Proficiency Legend */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -135,7 +137,7 @@ const SkillCard = ({ skill }) => {
           style={{ width: `${(skillLevel / 10) * 100}%` }}
         />
       </div>
-
+      
       <p className="text-xs font-semibold text-white drop-shadow-sm">
         Level {skillLevel}/10
       </p>
