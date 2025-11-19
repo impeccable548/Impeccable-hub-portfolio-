@@ -35,12 +35,12 @@ const Skills = () => {
           initial={{ opacity: 0, y: -50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-12 sm:mb-16 bg-white/80 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-amber-700 max-w-4xl mx-auto"
         >
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-amber-900 mb-4 comic-font">
             Tech Stack 💻
           </h2>
-          <p className="text-lg sm:text-xl text-amber-800 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-amber-900 font-semibold">
             Technologies I work with to build amazing products
           </p>
         </motion.div>
@@ -110,34 +110,34 @@ const SkillCard = ({ skill }) => {
   console.log('🎨 Card:', skillName, '| Color:', cardColor, '| Level:', skillLevel)
 
   return (
-    <div className={`${cardColor} text-white rounded-2xl p-4 sm:p-6 text-center shadow-2xl border-4 border-white`}>
+    <div className={`${cardColor} text-white rounded-2xl p-4 sm:p-6 text-center shadow-2xl border-4 border-white relative`}>
       <div className="mb-3">
         {skill?.icon_url && !imageError ? (
           <img
             src={skill.icon_url}
             alt={skillName}
             onError={() => setImageError(true)}
-            className="w-12 h-12 sm:w-16 sm:h-16 mx-auto object-contain"
+            className="w-12 h-12 sm:w-16 sm:h-16 mx-auto object-contain drop-shadow-lg"
           />
         ) : (
-          <div className="text-4xl sm:text-5xl">
+          <div className="text-4xl sm:text-5xl font-bold text-white drop-shadow-lg">
             {skillName.charAt(0).toUpperCase()}
           </div>
         )}
       </div>
 
-      <p className="font-bold text-sm sm:text-base lg:text-lg mb-2">
+      <p className="font-bold text-sm sm:text-base lg:text-lg mb-2 text-white drop-shadow-md">
         {skillName}
       </p>
 
       <div className="w-full bg-white/30 rounded-full h-2 mb-1">
         <div 
-          className="bg-white h-2 rounded-full"
+          className="bg-white h-2 rounded-full shadow-md"
           style={{ width: `${(skillLevel / 10) * 100}%` }}
         />
       </div>
       
-      <p className="text-xs font-semibold opacity-90">
+      <p className="text-xs font-semibold text-white drop-shadow-sm">
         Level {skillLevel}/10
       </p>
     </div>
