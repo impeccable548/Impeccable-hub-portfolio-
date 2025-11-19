@@ -58,41 +58,39 @@ const Skills = () => {
               ))}
             </div>
 
-            {/* Proficiency Legend fix */}
+            {/* Proficiency Legend with staggered animation */}
             <motion.div
-              initial={{ opacity: 1, y: 30 }}  // 🔹 changed from 0 → 1
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.8 }}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              variants={{
+                visible: { transition: { staggerChildren: 0.2 } },
+              }}
               className="mt-12 sm:mt-16 text-center"
             >
               <p className="text-sm sm:text-base text-amber-700 font-semibold mb-4">
                 Proficiency Levels
               </p>
               <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full" />
-                  <span className="text-xs sm:text-sm text-gray-700">
-                    <strong>Beginner</strong> (1-3)
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full" />
-                  <span className="text-xs sm:text-sm text-gray-700">
-                    <strong>Intermediate</strong> (4-6)
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-purple-500 rounded-full" />
-                  <span className="text-xs sm:text-sm text-gray-700">
-                    <strong>Advanced</strong> (7-8)
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full" />
-                  <span className="text-xs sm:text-sm text-gray-700">
-                    <strong>Expert</strong> (9-10)
-                  </span>
-                </div>
+                {[
+                  { label: "Beginner", color: "bg-yellow-500", range: "1-3" },
+                  { label: "Intermediate", color: "bg-blue-500", range: "4-6" },
+                  { label: "Advanced", color: "bg-purple-500", range: "7-8" },
+                  { label: "Expert", color: "bg-green-500", range: "9-10" },
+                ].map((level, idx) => (
+                  <motion.div
+                    key={idx}
+                    className="flex items-center gap-2"
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+                    }}
+                  >
+                    <div className={`w-3 h-3 ${level.color} rounded-full`} />
+                    <span className="text-xs sm:text-sm text-gray-700">
+                      <strong>{level.label}</strong> ({level.range})
+                    </span>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </>
