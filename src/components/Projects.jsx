@@ -57,25 +57,15 @@ const Projects = () => {
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: -50 }}
+          initial={{ opacity: 1, y: -50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-12 sm:mb-16 bg-white/80 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-amber-700 max-w-4xl mx-auto"
         >
-          <motion.h2
-            animate={isInView ? {
-              scale: [1, 1.05, 1],
-            } : {}}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-amber-900 mb-4 comic-font"
-          >
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-amber-900 mb-4 comic-font">
             Featured Projects 🚀
-          </motion.h2>
-          <p className="text-lg sm:text-xl text-amber-800 max-w-2xl mx-auto">
+          </h2>
+          <p className="text-lg sm:text-xl text-amber-900 font-semibold">
             Check out some of my recent work and live projects
           </p>
         </motion.div>
