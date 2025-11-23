@@ -29,9 +29,16 @@ export const useProjects = () => {
   // Add new project
   const addProject = async (projectData) => {
     try {
+      console.log('📤 Adding project to DB:', projectData)
+      
       const { data, error } = await db.projects.create(projectData)
       
-      if (error) throw error
+      if (error) {
+        console.error('❌ DB Error:', error)
+        throw error
+      }
+      
+      console.log('✅ Project added:', data)
       
       setProjects(prev => [data, ...prev])
       toast.success('Project added successfully!')
