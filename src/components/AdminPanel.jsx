@@ -360,16 +360,27 @@ const ProjectsTab = ({
   }
 
   const handleSubmit = async () => {
-    const projectData = {
-      ...formData,
-      tech_stack: formData.tech_stack.split(',').map(t => t.trim()).filter(Boolean)
+    if (!formData.title || !formData.description) {
+      toast.error('Please fill in title and description')
+      return
     }
+
+    const projectData = {
+      title: formData.title,
+      description: formData.description,
+      tech_stack: formData.tech_stack ? formData.tech_stack.split(',').map(t => t.trim()).filter(Boolean) : [],
+      link: formData.link || null,
+      image_url: formData.image_url || null
+    }
+
+    console.log('📦 Saving project:', projectData)
 
     if (editingItem) {
       await updateProject(editingItem.id, projectData)
       setEditingItem(null)
     } else {
-      await addProject(projectData)
+      const result = await addProject(projectData)
+      console.log('✅ Project saved:', result)
       setShowAddForm(false)
     }
 
@@ -565,6 +576,7 @@ const ProjectsTab = ({
       </div>
     </div>
   )
+
 }
 
 // Skills Tab (Similar structure, condensed for space)
