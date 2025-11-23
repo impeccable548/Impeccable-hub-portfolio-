@@ -57,7 +57,7 @@ const Projects = () => {
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 1, y: -50 }}
+          initial={{ opacity: 0, y: -50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
           className="text-center mb-12 sm:mb-16 bg-white/80 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-amber-700 max-w-4xl mx-auto"
@@ -83,7 +83,7 @@ const Projects = () => {
           <motion.div
             variants={containerVariants}
             initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
+            animate="visible"
             className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
           >
             {projects.map((project) => (
@@ -103,7 +103,7 @@ const Projects = () => {
 // Individual Project Card Component
 const ProjectCard = ({ project, variants }) => {
   const [imageError, setImageError] = React.useState(false)
-  
+
   return (
     <motion.div
       variants={variants}
@@ -111,7 +111,7 @@ const ProjectCard = ({ project, variants }) => {
         y: -10,
         transition: { duration: 0.3 }
       }}
-      className="bg-white rounded-2xl shadow-xl overflow-hidden border-4 border-amber-700 group cursor-pointer"
+      className="relative bg-white rounded-2xl shadow-xl overflow-hidden border-4 border-amber-700 group cursor-pointer"
     >
       {/* Project Image */}
       {project.image_url && !imageError ? (
@@ -170,9 +170,7 @@ const ProjectCard = ({ project, variants }) => {
             {project.tech_stack.map((tech, index) => (
               <motion.span
                 key={index}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
+                initial={{ opacity: 1, scale: 1 }}
                 whileHover={{ scale: 1.1 }}
                 className="text-xs sm:text-sm text-amber-700 font-semibold bg-amber-100 px-3 py-1 rounded-full"
               >
@@ -199,12 +197,7 @@ const ProjectCard = ({ project, variants }) => {
       </div>
 
       {/* Decorative Corner */}
-      <motion.div
-        initial={{ scale: 0, rotate: -45 }}
-        whileInView={{ scale: 1, rotate: 0 }}
-        transition={{ delay: 0.2 }}
-        className="absolute top-0 right-0 w-16 h-16 bg-amber-600 rounded-bl-full opacity-20"
-      />
+      <div className="absolute top-0 right-0 w-16 h-16 bg-amber-600 rounded-bl-full opacity-20" />
     </motion.div>
   )
 }
